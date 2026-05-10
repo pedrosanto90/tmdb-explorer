@@ -1,1 +1,26 @@
-<p>movie-list works!</p>
+<div class="movie-list">
+  <div class="movie-list__header">
+    <h1 class="movie-list__title">
+      {{ currentQuery ? 'Resultados para "' + currentQuery + '"' : 'Filmes Populares' }}
+    </h1>
+    <app-search-bar (searchChange)="onSearchChange($event)" />
+  </div>
+
+  @if (isLoading) {
+    <app-loading-spinner message="A carregar filmes..." />
+  } @else if (errorMessage) {
+    <div class="movie-list__error">
+      <p>⚠️ {{ errorMessage }}</p>
+    </div>
+  } @else if (movies.length === 0) {
+    <div class="movie-list__empty">
+      <p>🎬 Nenhum filme encontrado para "{{ currentQuery }}".</p>
+    </div>
+  } @else {
+    <div class="movie-list__grid">
+      @for (movie of movies; track movie.id) {
+        <app-movie-card [movie]="movie" />
+      }
+    </div>
+  }
+</div>
