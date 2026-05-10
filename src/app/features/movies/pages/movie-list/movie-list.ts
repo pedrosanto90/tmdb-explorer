@@ -5,11 +5,12 @@ import { LoadingSpinner } from '../../../../shared/components/loading-spinner/lo
 import { catchError, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { Tmdb } from '../../../../core/services/tmdb';
 import { Movie } from '../../../../core/models/movie.model';
+import { ErrorMessage } from '../../../../shared/components/error-message/error-message';
 
 @Component({
   selector: 'app-movie-list',
   standalone: true,
-  imports: [MovieCard, SearchBar, LoadingSpinner],
+  imports: [MovieCard, SearchBar, LoadingSpinner, ErrorMessage],
   templateUrl: './movie-list.html',
   styleUrl: './movie-list.scss',
 })
@@ -54,6 +55,10 @@ export class MovieList implements OnInit, OnDestroy {
 
   onSearchChange(query: string): void {
     this.searchQuery$.next(query);
+  }
+
+  onRetry(): void {
+    this.searchQuery$.next(this.currentQuery);
   }
 
   ngOnDestroy(): void {
