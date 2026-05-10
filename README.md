@@ -61,10 +61,49 @@ ng serve
 ## 📁 Project Structure
 
 ```
-src/app/
-├── core/                  # Services, interceptors, models
-├── features/
-│   ├── movies/            # Listing and search
-│   └── movie-detail/      # Detail page
-└── shared/                # Reusable components
+src/
+├── app/
+│   ├── app.config.ts
+│   ├── app.routes.ts
+│   ├── app.ts / app.html / app.scss / app.spec.ts
+│   ├── core/
+│   │   ├── interceptors/
+│   │   │   ├── api-key-interceptor.ts
+│   │   │   └── api-key-interceptor.spec.ts
+│   │   ├── models/
+│   │   │   └── movie.model.ts
+│   │   └── services/
+│   │       ├── tmdb.ts
+│   │       └── tmdb.spec.ts
+│   ├── features/
+│   │   ├── movies/
+│   │   │   ├── movies-module.ts
+│   │   │   ├── movies-routing-module.ts
+│   │   │   ├── components/
+│   │   │   │   ├── movie-card/
+│   │   │   │   │   └── movie-card.{ts,html,scss,spec.ts}
+│   │   │   │   └── search-bar/
+│   │   │   │       └── search-bar.{ts,html,scss,spec.ts}
+│   │   │   └── pages/
+│   │   │       └── movie-list/
+│   │   │           └── movie-list.{ts,html,scss,spec.ts}
+│   │   └── movie-detail/
+│   │       ├── movie-detail-module.ts
+│   │       ├── movie-detail-routing-module.ts
+│   │       └── pages/
+│   │           └── movie-detail/
+│   │               └── movie-detail.{ts,html,scss,spec.ts}
+│   └── shared/
+│       ├── shared-module.ts
+│       └── components/
+│           ├── error-message/
+│           │   └── error-message.{ts,html,scss,spec.ts}
+│           └── loading-spinner/
+│               └── loading-spinner.{ts,html,scss,spec.ts}
+├── environments/
+│   ├── environment.ts
+│   └── environment.development.ts
+├── index.html
+├── main.ts
+└── styles.scss
 ```

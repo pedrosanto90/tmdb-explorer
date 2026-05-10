@@ -21,4 +21,16 @@
       }
     </div>
   }
+
+  @if (!isLoading && !errorMessage && totalPages > 1) {
+    <div class="pagination">
+      <button [disabled]="currentPage === 1" (click)="onPageChange(currentPage - 1)">
+        Previous
+      </button>
+      <span> {{ currentPage }} / {{ totalPages }}</span>
+      <button [disabled]="currentPage === totalPages" (click)="onPageChange(currentPage + 1)">
+        Next
+      </button>
+    </div>
+  }
 </div>

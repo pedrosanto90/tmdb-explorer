@@ -19,6 +19,8 @@ export class MovieList implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage = '';
   currentQuery = '';
+  currentPage = 1;
+  totalPages = 1;
 
   private readonly searchQuery$ = new Subject<string>();
   private readonly destroy$ = new Subject<void>();
@@ -48,9 +50,15 @@ export class MovieList implements OnInit, OnDestroy {
       )
       .subscribe((response) => {
         this.movies = response.results;
+        this.totalPages = response.total_pages;
         this.isLoading = false;
       });
     this.searchQuery$.next('');
+  }
+
+  onPageChange(page: number): void {
+    this.currentPage = page;
+    this.searchQuery$.next(this.currentQuery);
   }
 
   onSearchChange(query: string): void {
