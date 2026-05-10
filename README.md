@@ -1,59 +1,70 @@
-# TmdbExplorer
+# 🎬 TMDB Explorer
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.8.
+Angular application to explore movies using the [The Movie Database (TMDB)](https://www.themoviedb.org/) API.
 
-## Development server
+Project developed to practice advanced Angular and RxJS concepts.
 
-To start a local development server, run:
+## 🚀 Demo
+
+> Link to the deploy (Vercel/Netlify — see deploy section below)
+
+## 🛠️ Technologies
+
+- Angular 21 (Standalone Components)
+- TypeScript (strict mode)
+- RxJS
+- TMDB API v3
+
+## ✨ Features
+
+- Popular movies listing
+- Real-time search with debounce
+- Detail page with cast
+- Error handling with retry
+- Lazy loading per route
+
+## 📚 RxJS concepts practiced
+
+| Operator | Where it is used |
+|---|---|
+| `debounceTime` | Search — avoids spamming the API |
+| `distinctUntilChanged` | Search — ignores repeated values |
+| `switchMap` | Search and detail — cancels previous requests |
+| `forkJoin` | Detail — loads movie and credits in parallel |
+| `takeUntil` | All components — avoids memory leaks |
+| `catchError` | All components — error handling |
+
+## ⚙️ Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/your-username/tmdb-explorer.git
+cd tmdb-explorer
+
+# Install dependencies
+npm install
+
+# Configure the API key
+# Edit src/environments/environment.ts and add your TMDB API key
+
+# Start the development server
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🔑 API Key
 
-## Code scaffolding
+1. Create an account at [themoviedb.org](https://www.themoviedb.org/)
+2. Go to **Settings → API → Developer**
+3. Copy the **API Key (v3)**
+4. Paste it into `src/environments/environment.ts`
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📁 Project Structure
 
-```bash
-ng generate component component-name
 ```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
+src/app/
+├── core/                  # Services, interceptors, models
+├── features/
+│   ├── movies/            # Listing and search
+│   └── movie-detail/      # Detail page
+└── shared/                # Reusable components
 ```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
