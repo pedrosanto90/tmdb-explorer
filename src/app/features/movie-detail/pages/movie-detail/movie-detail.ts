@@ -6,11 +6,12 @@ import { environment } from '../../../../../environments/environment';
 import { catchError, forkJoin, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { Tmdb } from '../../../../core/services/tmdb';
 import { SlicePipe } from '@angular/common';
+import { ErrorMessage } from '../../../../shared/components/error-message/error-message';
 
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
-  imports: [RouterLink, LoadingSpinner, SlicePipe],
+  imports: [RouterLink, LoadingSpinner, SlicePipe, ErrorMessage],
   templateUrl: './movie-detail.html',
   styleUrl: './movie-detail.scss',
 })
@@ -23,6 +24,8 @@ export class MovieDetail implements OnInit, OnDestroy {
 
   readonly imageBaseUrl = environment.tmdbBaseUrl;
   private readonly destroy$ = new Subject<void>();
+
+  private currentId: number | null = null;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -59,6 +62,14 @@ export class MovieDetail implements OnInit, OnDestroy {
         }
         this.isLoading = false;
       });
+  }
+
+  onRetry(): void {
+    if (this.currentId) {
+      this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+        this.currentId = Number(params.get('id'));
+      });
+    }
   }
 
   get backdropUrl(): string {

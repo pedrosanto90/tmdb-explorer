@@ -1,10 +1,7 @@
 @if (isLoading) {
   <app-loading-spinner message="A carregar detalhes..." />
 } @else if (errorMessage) {
-  <div class="error">
-    <p>⚠️ {{ errorMessage }}</p>
-    <a routerLink="/movies" class="error__back">← Voltar à listagem</a>
-  </div>
+  <app-error-message [message]="errorMessage" [showRetry]="true" (retry)="onRetry()" />
 } @else if (movie) {
   <div class="detail">
     <!-- Backdrop -->
