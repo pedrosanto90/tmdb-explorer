@@ -52,6 +52,10 @@ export class MovieList implements OnInit, OnDestroy {
     this.searchQuery$.next('');
   }
 
+  onSearchChange(query: string): void {
+    this.searchQuery$.next(query);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
