@@ -1,1 +1,11 @@
-<p>movie-card works!</p>
+<article class="card" [routerLink]="['/movies', movie().id]">
+  <div class="card__poster">
+    <img [src]="posterUrl" [alt]="movie().title" class="card__image" loading="lazy" />
+    <span class="card__rating">⭐ {{ rating }}</span>
+  </div>
+
+  <div class="card__info">
+    <h3 class="card__title">{{ movie().title }}</h3>
+    <span class="card__year">{{ releaseYear }}</span>
+  </div>
+</article>
