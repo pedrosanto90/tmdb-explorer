@@ -1,1 +1,72 @@
-<p>movie-detail works!</p>
+@if (isLoading) {
+  <app-loading-spinner message="A carregar detalhes..." />
+} @else if (errorMessage) {
+  <div class="error">
+    <p>⚠️ {{ errorMessage }}</p>
+    <a routerLink="/movies" class="error__back">← Voltar à listagem</a>
+  </div>
+} @else if (movie) {
+  <div class="detail">
+    <!-- Backdrop -->
+    @if (backdropUrl) {
+      <div class="detail__backdrop" [style.background-image]="'url(' + backdropUrl + ')'"></div>
+    }
+
+    <div class="detail__content">
+      <!-- Poster + Info principal -->
+      <div class="detail__hero">
+        <img [src]="posterUrl" [alt]="movie.title" class="detail__poster" />
+
+        <div class="detail__info">
+          <a routerLink="/movies" class="detail__back">← Voltar</a>
+          <h1 class="detail__title">{{ movie.title }}</h1>
+
+          @if (movie.tagline) {
+            <p class="detail__tagline">{{ movie.tagline }}</p>
+          }
+
+          <div class="detail__meta">
+            <span class="badge">⭐ {{ rating }}</span>
+            <span class="badge">🕐 {{ runtime }}</span>
+            <span class="badge">📅 {{ movie.release_date | slice: 0 : 4 }}</span>
+          </div>
+
+          <div class="detail__genres">
+            @for (genre of movie.genres; track genre.id) {
+              <span class="genre-tag">{{ genre.name }}</span>
+            }
+          </div>
+
+          <p class="detail__overview">{{ movie.overview }}</p>
+        </div>
+      </div>
+
+      <!-- Elenco -->
+      @if (cast.length > 0) {
+        <div class="detail__cast">
+          <h2 class="detail__section-title">Elenco Principal</h2>
+          <div class="cast-grid">
+            @for (member of cast; track member.id) {
+              <div class="cast-card">
+                <img
+                  [src]="
+                    member.profile_path
+                      ? imageBaseUrl + member.profile_path
+                      : 'assets/placeholder.png'
+                  "
+                  [alt]="member.name"
+                  class="cast-card__image"
+                  loading="lazy"
+                />
+                <div class="cast-card__info">
+                  <span class="cast-card__name">{{ member.name }}</span>
+                  <span class="cast-card__character">{{ member.character }}</span>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
