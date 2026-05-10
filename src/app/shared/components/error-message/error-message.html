@@ -1,0 +1,8 @@
+<div class="error">
+  <span class="error__icon">⚠️</span>
+  <p class="error_message">{{ message() }}</p>
+
+  @if (showRetry()) {
+    <button class="error__retry" (click)="onRetry()">🔄 Try Again</button>
+  }
+</div>
