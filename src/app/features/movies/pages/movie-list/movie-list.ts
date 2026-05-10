@@ -6,6 +6,7 @@ import { catchError, of, Subject, switchMap, takeUntil } from 'rxjs';
 import { Tmdb } from '../../../../core/services/tmdb';
 import { Movie } from '../../../../core/models/movie.model';
 import { ErrorMessage } from '../../../../shared/components/error-message/error-message';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-movie-list',
@@ -25,12 +26,23 @@ export class MovieList implements OnInit, OnDestroy {
   private readonly searchQuery$ = new Subject<string>();
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private readonly tmdbService: Tmdb) {}
+  constructor(
+    private readonly tmdbService: Tmdb,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
+  ) {}
 
   ngOnInit(): void {
+    const initialQuery = this.route.snapshot.queryParamMap.get('q') ?? '';
+
     this.searchQuery$
       .pipe(
         switchMap((query) => {
+          this.router.navigate([], {
+            queryParams: { q: query || null },
+            queryParamsHandling: 'merge',
+            replaceUrl: true,
+          });
           this.isLoading = true;
           this.errorMessage = '';
           this.currentQuery = query;
@@ -53,7 +65,7 @@ export class MovieList implements OnInit, OnDestroy {
         this.totalPages = response.total_pages;
         this.isLoading = false;
       });
-    this.searchQuery$.next('');
+    this.searchQuery$.next(initialQuery);
   }
 
   onPageChange(page: number): void {
