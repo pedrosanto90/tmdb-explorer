@@ -98,8 +98,10 @@ src/
 │       └── components/
 │           ├── error-message/
 │           │   └── error-message.{ts,html,scss,spec.ts}
-│           └── loading-spinner/
-│               └── loading-spinner.{ts,html,scss,spec.ts}
+│           ├── loading-spinner/
+│           │   └── loading-spinner.{ts,html,scss,spec.ts}
+│           └── movie-card-skeleton/
+│               └── movie-card-skeleton.{ts,html,scss,spec.ts}
 ├── environments/
 │   ├── environment.ts
 │   └── environment.development.ts
