@@ -22,7 +22,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   isLoading = false;
   errorMessage = '';
 
-  readonly imageBaseUrl = environment.tmdbBaseUrl;
+  readonly imageBaseUrl = environment.tmdbImageBaseUrl;
   private readonly destroy$ = new Subject<void>();
 
   private currentId: number | null = null;
@@ -34,6 +34,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    console.log('Movie Details');
     this.route.paramMap
       .pipe(
         switchMap((params) => {
