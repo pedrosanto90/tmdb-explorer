@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MovieCard } from '../../components/movie-card/movie-card';
 import { SearchBar } from '../../components/search-bar/search-bar';
 import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
@@ -7,11 +7,12 @@ import { Tmdb } from '../../../../core/services/tmdb';
 import { Movie } from '../../../../core/models/movie.model';
 import { ErrorMessage } from '../../../../shared/components/error-message/error-message';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MovieCardSkeleton } from '../../../../shared/components/movie-card-skeleton/movie-card-skeleton';
 
 @Component({
   selector: 'app-movie-list',
   standalone: true,
-  imports: [MovieCard, SearchBar, LoadingSpinner, ErrorMessage],
+  imports: [MovieCard, SearchBar, LoadingSpinner, ErrorMessage, MovieCardSkeleton],
   templateUrl: './movie-list.html',
   styleUrl: './movie-list.scss',
 })
@@ -26,10 +27,13 @@ export class MovieList implements OnInit, OnDestroy {
   private readonly searchQuery$ = new Subject<string>();
   private readonly destroy$ = new Subject<void>();
 
+  readonly skeletonItems = Array(12).fill(0);
+
   constructor(
     private readonly tmdbService: Tmdb,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +50,7 @@ export class MovieList implements OnInit, OnDestroy {
           this.isLoading = true;
           this.errorMessage = '';
           this.currentQuery = query;
+          this.cdr.markForCheck();
 
           const request$ = query.trim()
             ? this.tmdbService.searchMovies(query)
@@ -54,6 +59,7 @@ export class MovieList implements OnInit, OnDestroy {
           return request$.pipe(
             catchError((err) => {
               this.errorMessage = err.message;
+              this.cdr.markForCheck();
               return of({ results: [], page: 0, total_pages: 0, total_results: 0 });
             }),
           );
@@ -64,6 +70,7 @@ export class MovieList implements OnInit, OnDestroy {
         this.movies = response.results;
         this.totalPages = response.total_pages;
         this.isLoading = false;
+        this.cdr.markForCheck();
       });
     this.searchQuery$.next(initialQuery);
   }

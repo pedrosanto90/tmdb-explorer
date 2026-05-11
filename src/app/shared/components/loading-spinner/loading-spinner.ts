@@ -8,6 +8,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './loading-spinner.scss',
 })
 export class LoadingSpinner {
-  // input() é a forma moderna de @Input() no Angular 17+
   readonly message = input<string>('Loading...');
 }

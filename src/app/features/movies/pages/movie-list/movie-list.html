@@ -8,6 +8,11 @@
 
   @if (isLoading) {
     <app-loading-spinner message="Loading Movies..." />
+    <div class="movie-list__grid">
+      @for (item of skeletonItems; track $index) {
+        <app-movie-card-skeleton />
+      }
+    </div>
   } @else if (errorMessage) {
     <app-error-message [message]="errorMessage" [showRetry]="true" (retry)="onRetry()" />
   } @else if (movies.length === 0) {

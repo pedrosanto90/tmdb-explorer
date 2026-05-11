@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { LoadingSpinner } from '../../../../shared/components/loading-spinner/loading-spinner';
 import { CastMember, MovieDetail as MovieDetails } from '../../../../core/models/movie.model';
@@ -30,6 +30,7 @@ export class MovieDetail implements OnInit, OnDestroy {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly tmdbService: Tmdb,
+    private readonly cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -39,6 +40,7 @@ export class MovieDetail implements OnInit, OnDestroy {
           const id = Number(params.get('id'));
           this.isLoading = true;
           this.errorMessage = '';
+          this.cdr.markForCheck();
 
           // forkJoin trigger both requests at the same time
           // only returns when both finished
@@ -49,6 +51,7 @@ export class MovieDetail implements OnInit, OnDestroy {
             catchError((err) => {
               this.errorMessage = err.message;
               this.isLoading = false;
+              this.cdr.markForCheck();
               return of(null);
             }),
           );
@@ -61,6 +64,7 @@ export class MovieDetail implements OnInit, OnDestroy {
           this.cast = result.credits.cast.slice(0, 10);
         }
         this.isLoading = false;
+        this.cdr.markForCheck();
       });
   }
 
